@@ -81,9 +81,9 @@ public class RapportService {
         Patient patient = patientProxy.getPatient(idPatient);
         Integer triggers = checkTrigger(noteProxy.getNoteByIdPatient(idPatient));
         Integer patientAge = calulAge(patient.getDob()).orElseThrow(() -> new DateTimeException("Calculation of date of birth failed"));
-        log.info("Age  = "+patientAge + " / triggers "+triggers);
 
         Rapport rapport=new Rapport();
+        rapport.setIdPatient(idPatient);
         rapport.setAge(patientAge);
         rapport.setLevel(RiskLevel.NONE.getLibelle());
 
