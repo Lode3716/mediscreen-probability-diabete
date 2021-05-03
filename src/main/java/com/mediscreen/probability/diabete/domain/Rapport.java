@@ -9,6 +9,5 @@ public class Rapport {
 
     private Integer idPatient;
     private Integer age;
-
-    private RiskLevel level;
+    private String level;
 }

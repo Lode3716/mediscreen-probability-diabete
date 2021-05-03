@@ -14,4 +14,10 @@ public class Note {
     private String practitioner;
     private LocalDate createDate;
     private LocalDate updateDate;
+
+    public Note(Integer idPatient, String note, String practitioner) {
+        this.idPatient = idPatient;
+        this.note = note;
+        this.practitioner = practitioner;
+    }
 }

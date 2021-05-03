@@ -16,4 +16,10 @@ public class Patient {
     private Character gender;
     private String address;
     private String phone;
+
+    public Patient(Integer id, LocalDate dob, Character gender) {
+        this.id = id;
+        this.dob = dob;
+        this.gender = gender;
+    }
 }
