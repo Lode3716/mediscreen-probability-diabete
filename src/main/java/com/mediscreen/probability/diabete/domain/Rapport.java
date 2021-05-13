@@ -1,7 +1,6 @@
 package com.mediscreen.probability.diabete.domain;
 
 
-import com.mediscreen.probability.diabete.domain.filters.RiskLevel;
 import lombok.Data;
 
 @Data
