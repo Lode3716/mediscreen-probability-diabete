@@ -14,15 +14,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyObject;
-import static org.mockito.Mockito.when;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
 
 @Log4j2
 @ExtendWith(MockitoExtension.class)
@@ -68,73 +67,67 @@ class RapportServiceTest {
         note3 = new Note(1, "Le patient déclare qu'il n'a aucun problème", "Medecin");
         note4 = new Note(1, "En recherche de perte de poids, microalbumine élevé", "Medecin");
 
-        noteList1= Arrays.asList(note1);
-        noteList2= Arrays.asList(note2);
-        noteList3= Arrays.asList(note3,note4);
-        noteListAll=Arrays.asList(note1,note2,note3,note4);
+        noteList1 = Arrays.asList(note1);
+        noteList2 = Arrays.asList(note2);
+        noteList3 = Arrays.asList(note3, note4);
+        noteListAll = Arrays.asList(note1, note2, note3, note4);
 
 
         patient1Man = new Patient(1, LocalDate.of(1978, 12, 31), 'M');
-        patient2Man=new Patient(1, LocalDate.of(2000, 9, 16), 'M');
+        patient2Man = new Patient(1, LocalDate.of(2000, 9, 16), 'M');
 
-        patient1Women=new Patient(2, LocalDate.of(1980, 1, 31), 'F');
-        patient2Women=new Patient(2, LocalDate.of(1999, 4, 15), 'F');
+        patient1Women = new Patient(2, LocalDate.of(1980, 1, 31), 'F');
+        patient2Women = new Patient(2, LocalDate.of(1999, 4, 15), 'F');
 
     }
 
     @Test
-    public void givenListNote_countSymptome_thenReturn3Symptomes()
-    {
+    public void givenListNote_countSymptome_thenReturn3Symptomes() {
         Integer checkReturn = rapportService.checkTrigger(noteList1);
         assertThat(checkReturn).isEqualTo(3);
     }
 
     @Test
-    public void givenListNoteWith2Note_countSymptome_thenReturn2Symptomes()
-    {
+    public void givenListNoteWith2Note_countSymptome_thenReturn2Symptomes() {
         Integer checkReturn = rapportService.checkTrigger(noteList3);
         assertThat(checkReturn).isEqualTo(2);
     }
 
 
     @Test
-    public void givenListNote_countSymptoms_thenReturn2Symptomes()
-    {
+    public void givenListNote_countSymptoms_thenReturn2Symptomes() {
         Integer checkReturn = rapportService.checkTrigger(noteList2);
         assertThat(checkReturn).isEqualTo(2);
     }
 
     @Test
-    public void givenListNoteNull_countSymptome_thenReturn0Symptome()
-    {
-        List<Note> noteList=new ArrayList<>();
+    public void givenListNoteNull_countSymptome_thenReturn0Symptome() {
+        List<Note> noteList = new ArrayList<>();
         Integer checkReturn = rapportService.checkTrigger(noteList);
         assertThat(checkReturn).isEqualTo(0);
     }
 
     @Test
-    public void givenPatientMan_when3symptomsAnMore30old_ReturnAge41andBordeline()
-    {
+    public void givenPatientMan_when3symptomsAnMore30old_ReturnAge41andBordeline() {
         when(patientProxy.getPatient(anyInt())).thenReturn(patient1Man);
         when(noteProxy.getNoteByIdPatient(anyInt())).thenReturn(noteList1);
 
-        Rapport result= rapportService.createRapport(anyInt());
+        Rapport result = rapportService.createRapport(anyInt());
 
-        log.info("Resultat du rapport : "+result.getLevel() + " / "+result.getAge());
+        log.info("Resultat du rapport : " + result.getLevel() + " / " + result.getAge());
 
         assertThat(result.getLevel()).isEqualTo(RiskLevel.BORDERLINE.getLibelle());
         assertThat(result.getAge()).isEqualTo(42);
     }
 
     @Test
-    public void givenPatientMan_when7symptomsAnMore30old_ReturnAge41andDanger()
-    {
+    public void givenPatientMan_when7symptomsAnMore30old_ReturnAge41andDanger() {
         when(patientProxy.getPatient(anyInt())).thenReturn(patient1Man);
         when(noteProxy.getNoteByIdPatient(anyInt())).thenReturn(noteListAll);
 
-        Rapport result= rapportService.createRapport(anyInt());
+        Rapport result = rapportService.createRapport(anyInt());
 
-        log.info("Resultat du rapport : "+result.getLevel() + " / "+result.getAge());
+        log.info("Resultat du rapport : " + result.getLevel() + " / " + result.getAge());
 
         assertThat(result.getLevel()).isEqualTo(RiskLevel.DANGER.getLibelle());
         assertThat(result.getAge()).isEqualTo(42);
@@ -142,56 +135,52 @@ class RapportServiceTest {
 
 
     @Test
-    public void givenPatientMan_when7symptomsAndLess30old_ReturnAge21andDanger()
-    {
+    public void givenPatientMan_when7symptomsAndLess30old_ReturnAge21andDanger() {
         when(patientProxy.getPatient(anyInt())).thenReturn(patient2Man);
         when(noteProxy.getNoteByIdPatient(anyInt())).thenReturn(noteListAll);
 
-        Rapport result= rapportService.createRapport(anyInt());
+        Rapport result = rapportService.createRapport(anyInt());
 
-        log.info("Resultat du rapport : "+result.getLevel() + " / "+result.getAge());
+        log.info("Resultat du rapport : " + result.getLevel() + " / " + result.getAge());
 
         assertThat(result.getLevel()).isEqualTo(RiskLevel.EARLY_ONSET.getLibelle());
         assertThat(result.getAge()).isEqualTo(20);
     }
 
     @Test
-    public void givenPatientMan_when2symptomsAndLess30old_ReturnAge21andNone()
-    {
+    public void givenPatientMan_when2symptomsAndLess30old_ReturnAge21andNone() {
         when(patientProxy.getPatient(anyInt())).thenReturn(patient2Man);
         when(noteProxy.getNoteByIdPatient(anyInt())).thenReturn(noteList2);
 
-        Rapport result= rapportService.createRapport(anyInt());
+        Rapport result = rapportService.createRapport(anyInt());
 
-        log.info("Resultat du rapport : "+result.getLevel() + " / "+result.getAge());
+        log.info("Resultat du rapport : " + result.getLevel() + " / " + result.getAge());
 
         assertThat(result.getLevel()).isEqualTo(RiskLevel.NONE.getLibelle());
         assertThat(result.getAge()).isEqualTo(20);
     }
 
     @Test
-    public void givenPatientWomen_when3symptomsAnMore30old_ReturnAge41andBordeline()
-    {
+    public void givenPatientWomen_when3symptomsAnMore30old_ReturnAge41andBordeline() {
         when(patientProxy.getPatient(anyInt())).thenReturn(patient1Women);
         when(noteProxy.getNoteByIdPatient(anyInt())).thenReturn(noteList1);
 
-        Rapport result= rapportService.createRapport(anyInt());
+        Rapport result = rapportService.createRapport(anyInt());
 
-        log.info("Resultat du rapport : "+result.getLevel() + " / "+result.getAge());
+        log.info("Resultat du rapport : " + result.getLevel() + " / " + result.getAge());
 
         assertThat(result.getLevel()).isEqualTo(RiskLevel.BORDERLINE.getLibelle());
         assertThat(result.getAge()).isEqualTo(41);
     }
 
     @Test
-    public void givenPatientWomen__when7symptomsAnMore30old_ReturnAge41andDanger()
-    {
+    public void givenPatientWomen__when7symptomsAnMore30old_ReturnAge41andDanger() {
         when(patientProxy.getPatient(anyInt())).thenReturn(patient1Women);
         when(noteProxy.getNoteByIdPatient(anyInt())).thenReturn(noteListAll);
 
-        Rapport result= rapportService.createRapport(anyInt());
+        Rapport result = rapportService.createRapport(anyInt());
 
-        log.info("Resultat du rapport : "+result.getLevel() + " / "+result.getAge());
+        log.info("Resultat du rapport : " + result.getLevel() + " / " + result.getAge());
 
         assertThat(result.getLevel()).isEqualTo(RiskLevel.DANGER.getLibelle());
         assertThat(result.getAge()).isEqualTo(41);
@@ -199,28 +188,26 @@ class RapportServiceTest {
 
 
     @Test
-    public void givenPatientWomen_when7symptomsAndLess30old_ReturnAge22andEarlyOnset()
-    {
+    public void givenPatientWomen_when7symptomsAndLess30old_ReturnAge22andEarlyOnset() {
         when(patientProxy.getPatient(anyInt())).thenReturn(patient2Women);
         when(noteProxy.getNoteByIdPatient(anyInt())).thenReturn(noteListAll);
 
-        Rapport result= rapportService.createRapport(anyInt());
+        Rapport result = rapportService.createRapport(anyInt());
 
-        log.info("Resultat du rapport : "+result.getLevel() + " / "+result.getAge());
+        log.info("Resultat du rapport : " + result.getLevel() + " / " + result.getAge());
 
         assertThat(result.getLevel()).isEqualTo(RiskLevel.EARLY_ONSET.getLibelle());
         assertThat(result.getAge()).isEqualTo(22);
     }
 
     @Test
-    public void givenPatientWomen_when2symptomsAndLess30old_ReturnAge22andNone()
-    {
+    public void givenPatientWomen_when2symptomsAndLess30old_ReturnAge22andNone() {
         when(patientProxy.getPatient(anyInt())).thenReturn(patient2Women);
         when(noteProxy.getNoteByIdPatient(anyInt())).thenReturn(noteList2);
 
-        Rapport result= rapportService.createRapport(anyInt());
+        Rapport result = rapportService.createRapport(anyInt());
 
-        log.info("Resultat du rapport : "+result.getLevel() + " / "+result.getAge());
+        log.info("Resultat du rapport : " + result.getLevel() + " / " + result.getAge());
 
         assertThat(result.getLevel()).isEqualTo(RiskLevel.NONE.getLibelle());
         assertThat(result.getAge()).isEqualTo(22);
