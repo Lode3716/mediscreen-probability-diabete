@@ -1,11 +1,11 @@
 package com.mediscreen.probability.diabete.domain;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Data
+@Getter
 @NoArgsConstructor
 public class Patient {
 

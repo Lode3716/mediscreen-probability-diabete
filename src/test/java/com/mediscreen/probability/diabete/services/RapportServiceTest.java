@@ -48,11 +48,11 @@ class RapportServiceTest {
 
     private static Patient patient1Man;
     private static Patient patient2Man;
-    private static Patient patient3Man;
+
 
     private static Patient patient1Women;
     private static Patient patient2Women;
-    private static Patient patient3Women;
+    private static Patient patient3WommenDoBWrong;
 
 
     @BeforeEach
@@ -78,7 +78,7 @@ class RapportServiceTest {
 
         patient1Women = new Patient(2, LocalDate.of(1980, 1, 31), 'F');
         patient2Women = new Patient(2, LocalDate.of(1999, 4, 15), 'F');
-
+        patient3WommenDoBWrong = new Patient(2, null, 'F');
     }
 
     @Test
@@ -212,4 +212,5 @@ class RapportServiceTest {
         assertThat(result.getLevel()).isEqualTo(RiskLevel.NONE.getLibelle());
         assertThat(result.getAge()).isEqualTo(22);
     }
+
 }
