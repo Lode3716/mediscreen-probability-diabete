@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(name = "microservice-note", url = "localhost:8082")
+@FeignClient(name = "microservice-note", url = "http://note:8082")
 public interface NoteProxy {
 
     @GetMapping("patHistory/{id}")
