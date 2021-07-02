@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @Log4j2
 @RestController
 @RequestMapping(value = "assess")
-@CrossOrigin(origins = "http://127.0.0.1:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 public class RapportController {
 
     @Autowired
